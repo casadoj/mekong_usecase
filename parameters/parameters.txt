@@ -1,0 +1,2 @@
+UpperZoneTimeConstant LowerZoneTimeConstant GwPercValue	LZThreshold	b_Xinanjiang  PowerPrefFlow	SnowMeltCoef	CalChanMan1  CalChanMan2 LakeMultiplier  adjust_Normal_Flood ReservoirRnormqMult QSplitMult  GwLoss
+7.47476	              153.604	              1.643	      16.1032	    0.215152      2.51033	      2.55434	      1.8149	     5           0.875565        0.49691             1.30807             1.99051     0.501192
