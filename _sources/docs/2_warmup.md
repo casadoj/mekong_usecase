@@ -1,8 +1,10 @@
-< [Initialization run](1_initialization.ipynb) | [Run](3_run.ipynb) >
-
 ![header](images/header.png)
 
 # Warmup run
+
+<br>
+<br>
+<br>
 
 The purpose of this run is to obtain the model state variables at the beginning of the period of interest. Hence, the model is run from the beginning of the meteorological data (01-01-1979) to the timestep prior to the beginning of the period of interest (31-12-1989). The initial conditions are set as default values, but we use the two outputs of the initialization run to set the average discharge (`avgdis`) and the average inflow into the lower groundwater zone (`lzavin`). From this run we want as a result only the map of the state variables at the end of the simulation.
 
@@ -33,12 +35,12 @@ With all this in mind, the most relevant changes on the settings file (_settings
     # option to initialize Lisflood
     <setoption choice="0" name="InitLisflood"/>
     
-    # reporting options
+    # report end state maps
     <setoption choice="1" name="repEndMaps"/>
-    <setoption choice="1" name="repStateMaps"/>
     
-    # (these are not necessary, only for educational purposes)
-    <setoption choice="1" name="repStateMaps"/>
+    # report map stack of the lower groundwater zone
+    # (this option is not necessary, only for educational purposes)
+    <setoption choice="0" name="repStateMaps"/>
     <setoption choice="1" name="repLZMaps"/>
     
     # [...]
@@ -58,11 +60,11 @@ With all this in mind, the most relevant changes on the settings file (_settings
     <textvar name="DtSec" value="86400"/>
     <textvar name="DtSecChannel" value="14400"/>
     
-    # paths 
+    # paths
     <textvar name="PathInit" value="$(PathRoot)/initial"/>
     <textvar name="PathOut" value="$(PathRoot)/out/warmup"/>
     
-    # files where the output state maps will be saved
+    # files where the end state maps will be saved
     # (only a few of them are shown for the sake of brevity)
     <textvar name="ReservoirFillEnd" value="$(PathInit)/rsfil"/>
     <textvar name="Theta1End" value="$(PathInit)/tha_end"/>
@@ -83,7 +85,7 @@ With all this in mind, the most relevant changes on the settings file (_settings
     
     [...]
     
-    #initialized variables
+    # files from where to read the initialized variables
     <textvar name="LZAvInflowMap" value="$(PathInit)/lzavin"/>
     <textvar name="AvgDis" value="$(PathInit)/avgdis"/>
     
@@ -92,9 +94,9 @@ With all this in mind, the most relevant changes on the settings file (_settings
 </lfbinding>
 ```
 
-In the `<lfoptions>` element, the initialization model is deactivated, and several options that control the outputs reported by the simulation must be activated. In the succeeding run, we need to use the end state of this warmup run as the initial state; for that, the option `repEndMaps` is activated, which will create a NetCDF map for each state variable at the last timestep of the simulation. Only for the sake of showing another way of defining the initial conditions, I decided to report the map stack (maps of evolution over time) of the lower groundwater storage; for that, we can keep the option `repStateMaps` deactivated, but we must switch on the option `repLZMaps`.
+In the `<lfoptions>` element, the initialization model is deactivated, and several options that control the outputs reported by the simulation must be activated. In the succeeding run, we need to use the end state of this warmup run as the initial state; for that, the option `repEndMaps` is activated, which will create a NetCDF map for each state variable at the last timestep of the simulation. Only for the sake of showing another way of defining the initial conditions, we decided to report the map stack (evolution over time) of the lower groundwater storage; to do so, we can keep the option `repStateMaps` deactivated, but we must switch on the option `repLZMaps`.
 
-In the `<lfuser>` element, the first thing to do is to set the start and end of the simulation, and to configure reporting at every timestep in the variable `ReportSteps`. Then, the name and location of the output maps are defined; these maps represent the model state variables at the last timestep of the simulation and the stack map of the lower groundwater zone storage. For the sake of simplicity, in the snippet above only a few of them are shown. I chose to save the end maps in the _initial_ subfolder of the project, together with the outputs of the initialization run, whereas the map stacks will be saved in the subfolder _output/warmup_.
+In the `<lfuser>` element, the first thing to do is to set the start and end of the simulation, and to configure reporting at every timestep in the variable `ReportSteps`. Then, the name and location of the output maps are defined; these maps represent the model state variables at the last timestep of the simulation, and the stack map of the lower groundwater zone storage. For the sake of simplicity, in the snippet above only a few of them are shown. We chose to save the end maps in the _initial_ subfolder of the project, together with the outputs of the initialization run, whereas the map stack will be saved in the subfolder _output/warmup_.
 
 In the `<lfbinding>` element, we must define the initialization maps we've just created with the [initialization run](1_initialization.ipynb).
 
@@ -109,11 +111,11 @@ lisflood /home/user/your_path/settings_warmup.xml
 
 ## 3 Output
 
-The output of the warmup run are a series of NetCDF maps (subfolder _initial_) representing the state variables at the end of the simulation, and 1 NetCDF map stack (subfolder _out/warmup_) with the evolution of the lower groundwater zone storage. You must take into account that depending on the modules activated in your LISFLOOD model, some end maps will be or will not be created.
+The output of the warmup run are a series of NetCDF maps (subfolder _initial_) representing the state variables at the end of the simulation, and 1 NetCDF map stack (subfolder _out/warmup_) with the evolution of the lower groundwater zone storage. You must take into account that, depending on the modules activated in your LISFLOOD model, some end maps will be or will not be created.
 
 ### 3.1 End state maps 
 
-The end state maps will be the initial conditions for the succeeding run. In this example, they are the model state variables at 31-12-1989 (rembember that this date is 01-01-1990 in LISFLOOD end-of-timestep notation). Let's visualize some of those maps.
+The end state maps will be the initial conditions for the succeeding run. In this example, they are the model state variables the 31-12-1989 (remember that this date is 01-01-1990 in LISFLOOD end-of-timestep notation). Let's visualize some of those maps.
 
 
 ```python
@@ -193,8 +195,6 @@ print('Last timestep: {0}'.format(da['time'].isel(time=-1).data))
 
 ***Figure 2**. Evolution of the lower groundwater storage throughout the warmup run. The map on the left represents the average water storave over time, whereas the lineplot on the right the evolution over time of the average catchment water storage.*
 
-The lineplot above proves why it is necessary to warm up the model. The default initial condition we used as a starting point for this run (02-01-1979) differs from the end condition (01-01-1990). This difference can be seen also if we inspect the start and end maps. Even though the differences may seem small, this can make the difference in the succeeding run. 
+The lineplot above proves why it is necessary to warm up the model. The default initial condition we used as a starting point for this run (02-01-1979) differs from the end condition (01-01-1990). Even though the differences may seem small in this case, they can make the difference in the succeeding run. 
 
-The last timestep of this map stack may be used as the initial condition for the suceeding run, instead of the end map in _initial/lz.nc_, since they are the same. In the following notebook we will cover how to set this last map as the inial conditions.
-
-< [Initialization run](1_initialization.ipynb) | [Run](3_run.ipynb) >
+The last timestep of this map stack may be used as the initial condition for the suceeding run, instead of the end map in _initial/lz.nc_, since they are the same. In the following notebook we will cover how to set this last map as the initial conditions.

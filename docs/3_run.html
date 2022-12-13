@@ -109,7 +109,7 @@ const thebe_selector_output = ".output, .cell_output"
         <ul class="current nav bd-sidenav">
  <li class="toctree-l1">
   <a class="reference internal" href="0_general_setup.html">
-   Use case - Nam Ngum River
+   Input and general settings
   </a>
  </li>
  <li class="toctree-l1">
@@ -334,7 +334,7 @@ title="Print to PDF"
         <div class="col pl-md-3 pl-lg-5 content-container">
             <!-- Table of contents that is only displayed when printing the page -->
             <div id="jb-print-docs-body" class="onlyprint">
-                <h1>Main run</font></h1>
+                <h1>Main run</h1>
                 <!-- Table of contents -->
                 <div id="print-main-content">
                     <div id="jb-print-toc">
@@ -420,11 +420,13 @@ title="Print to PDF"
                 
               <div>
                 
-  <p>&lt; <a class="reference internal" href="2_warmup.html"><span class="doc std std-doc">Warmup run</span></a> |</p>
-<p><img alt="header" src="../_images/header.png" /></p>
-<section class="tex2jax_ignore mathjax_ignore" id="main-run-font">
-<h1>Main run</font><a class="headerlink" href="#main-run-font" title="Permalink to this headline">#</a></h1>
-<p>Once we have done the initialization run, and we have estimated the initial conditions in the warmup run, we are in a position to perform our target simulation. We want to simulate the 30 years period between 01-01-1990 and 31-12-2019  in order to estimate the climatology of the hydrological processes in the Nam Ngum River Basin. Remember that in <a class="reference external" href="https://ec-jrc.github.io/lisflood-code/2_ESSENTIAL_time-management/">LISFLOOD time convention</a> this dates corresponds to 02-01-1990 and 01-01-2020, respectively.</p>
+  <p><img alt="header" src="../_images/header.png" /></p>
+<section class="tex2jax_ignore mathjax_ignore" id="main-run">
+<h1>Main run<a class="headerlink" href="#main-run" title="Permalink to this headline">#</a></h1>
+<br>
+<br>
+<br>
+<p>Once we have done the initialization run and we have estimated the initial conditions in the warmup run, we are in a position to perform our target simulation. We want to simulate the 30 years period between 01-01-1990 and 31-12-2019  in order to estimate the climatology of the hydrological processes in the Nam Ngum River Basin. Remember that in <a class="reference external" href="https://ec-jrc.github.io/lisflood-code/2_ESSENTIAL_time-management/">LISFLOOD time convention</a> this dates corresponds to 02-01-1990 and 01-01-2020, respectively.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 <span class="kn">import</span> <span class="nn">xarray</span> <span class="k">as</span> <span class="nn">xr</span>
@@ -504,8 +506,11 @@ title="Print to PDF"
 <span class="nt">&lt;/lfbinding&gt;</span>
 </pre></div>
 </div>
-<p>In the <code class="docutils literal notranslate"><span class="pre">&lt;lfoptions&gt;</span></code> element, timeseries and maps to be reported are activated/deactivated. I chose to report timeseries of discharge (<code class="docutils literal notranslate"><span class="pre">repDischargeTs</span></code>) and reservoirs (<code class="docutils literal notranslate"><span class="pre">repsimulateReservoirs</span></code>). Regarding maps, in this case we’re not interested in the end state maps, therefore <code class="docutils literal notranslate"><span class="pre">repEndMaps</span></code> is deactivated. We’re only interested in the map stacks of state variables, therefore I activated <code class="docutils literal notranslate"><span class="pre">RepStateMaps</span></code>. However, this variable will not create the discharge and water abstraction map stacks; for that we need to activate the variables <code class="docutils literal notranslate"><span class="pre">repDischargeMaps</span></code> and <code class="docutils literal notranslate"><span class="pre">RepTotalAbs</span></code>. Finally, to generate the water exploitation index maps, we need to activate both <code class="docutils literal notranslate"><span class="pre">indicator</span></code> and <code class="docutils literal notranslate"><span class="pre">repWIndex</span></code>.</p>
-<p>In the <code class="docutils literal notranslate"><span class="pre">&lt;lfuser&gt;</span></code> element, we need to set several features. First, the points in the river network for which timeseries output will be generated; I defined three points using their longitude and latitude separated by spaces; there are other posibilities to set the reporting points. I set the simulation period, i.e., the start and end dates (<code class="docutils literal notranslate"><span class="pre">StepStart</span></code> and <code class="docutils literal notranslate"><span class="pre">StepEnd</span></code>), the timestep from which initial conditions may be read (<code class="docutils literal notranslate"><span class="pre">timestepInit</span></code>) and the timesteps that will be included in the output map stacks (<code class="docutils literal notranslate"><span class="pre">ReportSteps</span></code>); special attention to the 5 nines in this last variable (<code class="docutils literal notranslate"><span class="pre">1..99999</span></code>), which are necessary since the simulation exceeds the 10,000 timesteps. Later, the paths for the initial conditions and outputs are set. Finaly, the location of the initial condition maps must be specified. Special remark on the lower groundwater zone initial value (<code class="docutils literal notranslate"><span class="pre">LZInitValue</span></code>), for which we generated a map stack during the warmup run, instead of a end map; that’s the reason why the directory where the map is located is different.</p>
+<p>In the <code class="docutils literal notranslate"><span class="pre">&lt;lfoptions&gt;</span></code> element, timeseries and maps to be reported are activated/deactivated. We chose to report timeseries of discharge (<code class="docutils literal notranslate"><span class="pre">repDischargeTs</span></code>) and reservoirs (<code class="docutils literal notranslate"><span class="pre">repsimulateReservoirs</span></code>). Regarding maps, in this case we’re not interested in the end state maps, therefore <code class="docutils literal notranslate"><span class="pre">repEndMaps</span></code> is deactivated. We’re only interested in the map stacks of state variables, therefore we activated <code class="docutils literal notranslate"><span class="pre">RepStateMaps</span></code>. However, this variable will not create the discharge and water abstraction map stacks; for that we need to activate the variables <code class="docutils literal notranslate"><span class="pre">repDischargeMaps</span></code> and <code class="docutils literal notranslate"><span class="pre">RepTotalAbs</span></code>. Finally, to generate the water exploitation index maps, we need to activate both <code class="docutils literal notranslate"><span class="pre">indicator</span></code> and <code class="docutils literal notranslate"><span class="pre">repWIndex</span></code>.</p>
+<p>In the <code class="docutils literal notranslate"><span class="pre">&lt;lfuser&gt;</span></code> element, we need to set several features. First, the points in the river network for which timeseries output will be generated; we defined three points using their longitude and latitude separated by spaces (there are other posibilities to set the reporting points). We set the simulation period, i.e., the start and end dates (<code class="docutils literal notranslate"><span class="pre">StepStart</span></code> and <code class="docutils literal notranslate"><span class="pre">StepEnd</span></code>), the timestep from which initial conditions may be read (<code class="docutils literal notranslate"><span class="pre">timestepInit</span></code>) and the timesteps that will be included in the output map stacks (<code class="docutils literal notranslate"><span class="pre">ReportSteps</span></code>). Later, the paths for the initial conditions and outputs are set. Finaly, the location of the initial condition maps must be specified. Special remark on the lower groundwater zone initial value (<code class="docutils literal notranslate"><span class="pre">LZInitValue</span></code>), for which we generated a map stack during the warmup run, instead of a end map; that’s the reason why the directory where the map is located is different.</p>
+<blockquote>
+<div><p><strong>Note</strong>. Pay special attention to the 5 nines in the variable <code class="docutils literal notranslate"><span class="pre">ReportSteps</span></code> (<code class="docutils literal notranslate"><span class="pre">1..99999</span></code>), which are necessary since the simulation exceeds the 10,000 timesteps</p>
+</div></blockquote>
 <p>In the <code class="docutils literal notranslate"><span class="pre">&lt;lfbinding&gt;</span></code> element, same as in the warmup run, we must define the two maps that we generated in the <a class="reference internal" href="1_initialization.html"><span class="doc std std-doc">initialization run</span></a>.</p>
 </section>
 <section id="run-the-simulation">
@@ -527,7 +532,7 @@ lisflood /home/user/your_path/settings_run.xml
 <h3>3.1 Map stacks<a class="headerlink" href="#map-stacks" title="Permalink to this headline">#</a></h3>
 <section id="soil-layers">
 <h4>3.1.1 Soil layers<a class="headerlink" href="#soil-layers" title="Permalink to this headline">#</a></h4>
-<p>First, we will analyse the water stored in the soil layers. We’ll load the data and then we plot it to show its 3 dimensions. The maps show the average over time, whereas the lineplot shows a timeseries obtained by computing, for each timestep, the spatial average. In the first case we get an insight into the spatial variability, whereas in the second case we show temporal variability.</p>
+<p>First, we will analyse the water stored in the soil layers. We’ll load the data and then we plot it. The maps show the average over time, whereas the lineplot shows a timeseries obtained by computing, for each timestep, the spatial average. In the first case we get an insight into the spatial variability, whereas in the second case we show temporal variability.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># load and plot some map stacks</span>
 <span class="n">soil_storages</span> <span class="o">=</span> <span class="p">{}</span>
 <span class="k">for</span> <span class="n">var</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;tha&#39;</span><span class="p">,</span> <span class="s1">&#39;thb&#39;</span><span class="p">,</span> <span class="s1">&#39;thc&#39;</span><span class="p">]:</span>
@@ -568,7 +573,7 @@ lisflood /home/user/your_path/settings_run.xml
 </div>
 <p><img alt="png" src="../_images/3_2.png" /></p>
 <p><em><strong>Figure 2</strong>. Evolution of the two groundwater storages trhoughout the main run.</em></p>
-<p>From this plot we can infer that, in this case, both zones show seasonality, but the order of magnitude of this seasonal variation differs. Whereas the annual pattern in the upper zone (<span class="math notranslate nohighlight">\(uz\)</span>) is clearly visible in the lineplot, that of the lower zone is unnoticeable.</p>
+<p>From this plot we can infer that, in this case, both zones show seasonality, but the order of magnitude of this seasonal variation differs. Whereas the annual pattern in the upper zone (<span class="math notranslate nohighlight">\(uz\)</span>) is clearly visible in the lineplot, that of the lower zone (<span class="math notranslate nohighlight">\(lz\)</span>) is unnoticeable.</p>
 </section>
 <section id="discharge">
 <h4>3.1.3 Discharge<a class="headerlink" href="#discharge" title="Permalink to this headline">#</a></h4>
@@ -622,19 +627,26 @@ lisflood /home/user/your_path/settings_run.xml
 <h3>3.1.5 Water exploitation indexes<a class="headerlink" href="#water-exploitation-indexes" title="Permalink to this headline">#</a></h3>
 <p>Since for this run we activated the options <code class="docutils literal notranslate"><span class="pre">indicator</span></code> and <code class="docutils literal notranslate"><span class="pre">repWIndex</span></code>, a series of water index maps were generated:</p>
 <ul class="simple">
-<li><p>WDI: water dependency index
-$<span class="math notranslate nohighlight">\(
-WDI = \frac{local Water Demand Not Met By Local Water}{total Water Demand}
-\)</span>$</p></li>
-<li><p>WSI: water security index
-$<span class="math notranslate nohighlight">\(
-WSI = \frac{upstream Inflow Actually Used}{upstream Inflow Available}
-\)</span>$</p></li>
-<li><p>WTI: water sustainability index
-$<span class="math notranslate nohighlight">\(
-WTI = 1 - \frac{surfaceWaterDeficit}{totalWaterDemand}
-\)</span>$</p></li>
+<li><p>WDI: water dependency index</p></li>
 </ul>
+<div class="math notranslate nohighlight">
+\[
+WDI = \frac{local Water Demand Not Met By Local Water}{total Water Demand}
+\]</div>
+<ul class="simple">
+<li><p>WSI: water security index</p></li>
+</ul>
+<div class="math notranslate nohighlight">
+\[
+WSI = \frac{upstream Inflow Actually Used}{upstream Inflow Available}
+\]</div>
+<ul class="simple">
+<li><p>WTI: water sustainability index</p></li>
+</ul>
+<div class="math notranslate nohighlight">
+\[
+WTI = 1 - \frac{surfaceWaterDeficit}{totalWaterDemand}
+\]</div>
 <p>All these maps have monthly resolution, even though the simulation has daily timesteps.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># load and plot some map stacks</span>
 <span class="n">wi</span> <span class="o">=</span> <span class="p">{}</span>
@@ -650,15 +662,15 @@ WTI = 1 - \frac{surfaceWaterDeficit}{totalWaterDemand}
 </pre></div>
 </div>
 <p><img alt="png" src="../_images/3_5.png" /></p>
-<p><em><strong>Figure 5</strong>. Water indexes.</em></p>
-<p>The maps reproduce the water regions. The southern region has a slightly higher water demand stress. In the timeseries we observe that from 2005 onwards there are recurrent periods in which some of the local demands are not met by local water (peaks in WDI).</p>
+<p><em><strong>Figure 5</strong>. Water indexes. Maps are averages over the whole period; timeseries are averages over the whole catchment.</em></p>
+<p>The maps reproduce the water regions; with the southern region having a slightly higher water demand stress. In the timeseries we observe that from 2005 onwards there are recurrent periods in which some of the local demands are not met by local water (peaks in WDI).</p>
 <p><font color='red'>Why is WTI constantly zero?</font></p>
 </section>
 <section id="timeseries">
 <h3>3.2 Timeseries<a class="headerlink" href="#timeseries" title="Permalink to this headline">#</a></h3>
 <section id="id1">
 <h4>3.2.1 Discharge<a class="headerlink" href="#id1" title="Permalink to this headline">#</a></h4>
-<p>As mentioned before, discharge timeseries can be produced directly from the model. The option <code class="docutils literal notranslate"><span class="pre">repDischargeTs</span></code> in the settings file must be active, and the variable <code class="docutils literal notranslate"><span class="pre">Gauges</span></code> must include the coordinates of the points of interest. In our example, we defined three points in which the model will generate timeseries. Let’s check the results:</p>
+<p>As mentioned before, discharge timeseries can be produced directly from the model. The option <code class="docutils literal notranslate"><span class="pre">repDischargeTs</span></code> in the settings file must be active, and the variable <code class="docutils literal notranslate"><span class="pre">Gauges</span></code> must define the points of interest (in our case using the coordinates, but there are other ways to define it). We defined three points in which the model will generate timeseries. Let’s check the results:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># import timeseries</span>
 <span class="n">disWin</span> <span class="o">=</span> <span class="n">read_tss</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">path_out</span><span class="si">}</span><span class="s1">disWin.tss&#39;</span><span class="p">,</span> <span class="n">xml</span><span class="o">=</span><span class="n">settings_file</span><span class="p">)</span>
 
@@ -676,11 +688,11 @@ WTI = 1 - \frac{surfaceWaterDeficit}{totalWaterDemand}
 </div>
 <p><img alt="png" src="../_images/3_6.png" /></p>
 <p><em><strong>Figure 6</strong>. Discharge timeseries at the three points of interest.</em></p>
-<p>The <em>disWin.tss</em> file includes the discharge timeseries for the three points we defined. Each point is assigned an identifier. In our case, the catchment outlet corresponds to point 3. The plot includes as points the discharge timeseries at the outlet previously extracted from the discharge map stack (<em><a class="reference external" href="http://dis.nc">dis.nc</a></em>); we check that the values of the TSS file are equal to those of the netCDF.</p>
+<p>The <em>disWin.tss</em> file includes the discharge timeseries for the three points we defined. Each point is assigned an identifier; in our case, the catchment outlet corresponds to point 3. For the sake of comparison, the plot includes as points the discharge timeseries at the outlet extracted from the discharge map stack (<em><a class="reference external" href="http://dis.nc">dis.nc</a></em>) in section <a class="reference external" href="#3.1.3-Discharge">Discharge</a>; we check that the values of the TSS file are equal to those of the netCDF.</p>
 </section>
 <section id="reservoirs">
 <h4>3.2.2 Reservoirs<a class="headerlink" href="#reservoirs" title="Permalink to this headline">#</a></h4>
-<p>As the option <code class="docutils literal notranslate"><span class="pre">repsimulateReservoirs</span></code> is active in the settings file, the simulation created three TSS files representing the inflow, outflow and relative filling of the reservoirs. In our case, since there’s only one reservoir in the catchment, only one timeseries is included in each of these TSS files. Let’s load these timeseries a plot the reservoir simulation.</p>
+<p>As the option <code class="docutils literal notranslate"><span class="pre">repsimulateReservoirs</span></code> is active in the settings file, the simulation created three TSS files representing the inflow (<em>qresin.tss</em>), outflow (<em>qresout.tss</em>) and relative filling (<em>resfill.tss</em>) of the reservoirs. In our case, since there’s only one reservoir in the catchment, only one timeseries is included in each of these TSS files. Let’s load these timeseries and plot the reservoir simulation.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># load reservoir timeseries</span>
 <span class="n">timeseries</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;inflow&#39;</span><span class="p">:</span> <span class="s1">&#39;qresin&#39;</span><span class="p">,</span>
             <span class="s1">&#39;outflow&#39;</span><span class="p">:</span> <span class="s1">&#39;qresout&#39;</span><span class="p">,</span>
@@ -709,7 +721,6 @@ WTI = 1 - \frac{surfaceWaterDeficit}{totalWaterDemand}
 <ul class="simple">
 <li><p>The reservoir storage is kept between the normal and flooding limits throughout most of the simulation period. In 1994, 1995 and 1997 there are three exceptions in which the storage exceeded the flood limit.</p></li>
 </ul>
-<p>&lt; <a class="reference internal" href="2_warmup.html"><span class="doc std std-doc">Warmup run</span></a> |</p>
 </section>
 </section>
 </section>

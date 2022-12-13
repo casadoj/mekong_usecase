@@ -1,10 +1,12 @@
-< [Warmup run](2_warmup.ipynb) |
-
 ![header](images/header.png)
 
-# Main run</font>
+# Main run
 
-Once we have done the initialization run, and we have estimated the initial conditions in the warmup run, we are in a position to perform our target simulation. We want to simulate the 30 years period between 01-01-1990 and 31-12-2019  in order to estimate the climatology of the hydrological processes in the Nam Ngum River Basin. Remember that in [LISFLOOD time convention](https://ec-jrc.github.io/lisflood-code/2_ESSENTIAL_time-management/) this dates corresponds to 02-01-1990 and 01-01-2020, respectively.
+<br>
+<br>
+<br>
+
+Once we have done the initialization run and we have estimated the initial conditions in the warmup run, we are in a position to perform our target simulation. We want to simulate the 30 years period between 01-01-1990 and 31-12-2019  in order to estimate the climatology of the hydrological processes in the Nam Ngum River Basin. Remember that in [LISFLOOD time convention](https://ec-jrc.github.io/lisflood-code/2_ESSENTIAL_time-management/) this dates corresponds to 02-01-1990 and 01-01-2020, respectively.
 
 
 ```python
@@ -90,9 +92,11 @@ We will introduce a few changes in the settings file (*settings_run.xml*) compar
 </lfbinding>
 ```
 
-In the `<lfoptions>` element, timeseries and maps to be reported are activated/deactivated. I chose to report timeseries of discharge (`repDischargeTs`) and reservoirs (`repsimulateReservoirs`). Regarding maps, in this case we're not interested in the end state maps, therefore `repEndMaps` is deactivated. We're only interested in the map stacks of state variables, therefore I activated `RepStateMaps`. However, this variable will not create the discharge and water abstraction map stacks; for that we need to activate the variables `repDischargeMaps` and `RepTotalAbs`. Finally, to generate the water exploitation index maps, we need to activate both `indicator` and `repWIndex`.
+In the `<lfoptions>` element, timeseries and maps to be reported are activated/deactivated. We chose to report timeseries of discharge (`repDischargeTs`) and reservoirs (`repsimulateReservoirs`). Regarding maps, in this case we're not interested in the end state maps, therefore `repEndMaps` is deactivated. We're only interested in the map stacks of state variables, therefore we activated `RepStateMaps`. However, this variable will not create the discharge and water abstraction map stacks; for that we need to activate the variables `repDischargeMaps` and `RepTotalAbs`. Finally, to generate the water exploitation index maps, we need to activate both `indicator` and `repWIndex`.
 
-In the `<lfuser>` element, we need to set several features. First, the points in the river network for which timeseries output will be generated; I defined three points using their longitude and latitude separated by spaces; there are other posibilities to set the reporting points. I set the simulation period, i.e., the start and end dates (`StepStart` and `StepEnd`), the timestep from which initial conditions may be read (`timestepInit`) and the timesteps that will be included in the output map stacks (`ReportSteps`); special attention to the 5 nines in this last variable (`1..99999`), which are necessary since the simulation exceeds the 10,000 timesteps. Later, the paths for the initial conditions and outputs are set. Finaly, the location of the initial condition maps must be specified. Special remark on the lower groundwater zone initial value (`LZInitValue`), for which we generated a map stack during the warmup run, instead of a end map; that's the reason why the directory where the map is located is different.
+In the `<lfuser>` element, we need to set several features. First, the points in the river network for which timeseries output will be generated; we defined three points using their longitude and latitude separated by spaces (there are other posibilities to set the reporting points). We set the simulation period, i.e., the start and end dates (`StepStart` and `StepEnd`), the timestep from which initial conditions may be read (`timestepInit`) and the timesteps that will be included in the output map stacks (`ReportSteps`). Later, the paths for the initial conditions and outputs are set. Finaly, the location of the initial condition maps must be specified. Special remark on the lower groundwater zone initial value (`LZInitValue`), for which we generated a map stack during the warmup run, instead of a end map; that's the reason why the directory where the map is located is different.
+
+> **Note**. Pay special attention to the 5 nines in the variable `ReportSteps` (`1..99999`), which are necessary since the simulation exceeds the 10,000 timesteps
 
 In the `<lfbinding>` element, same as in the warmup run, we must define the two maps that we generated in the [initialization run](1_initialization.ipynb).
 
@@ -116,9 +120,10 @@ settings_file = 'settings_run.xml'
 ```
 
 ### 3.1 Map stacks
+
 #### 3.1.1 Soil layers
 
-First, we will analyse the water stored in the soil layers. We'll load the data and then we plot it to show its 3 dimensions. The maps show the average over time, whereas the lineplot shows a timeseries obtained by computing, for each timestep, the spatial average. In the first case we get an insight into the spatial variability, whereas in the second case we show temporal variability.
+First, we will analyse the water stored in the soil layers. We'll load the data and then we plot it. The maps show the average over time, whereas the lineplot shows a timeseries obtained by computing, for each timestep, the spatial average. In the first case we get an insight into the spatial variability, whereas in the second case we show temporal variability.
 
 
 ```python
@@ -176,7 +181,7 @@ plot_mapstacks(gw, vmin=vmin, vmax=vmax, ylabel='water content')
 
 ***Figure 2**. Evolution of the two groundwater storages trhoughout the main run.*
 
-From this plot we can infer that, in this case, both zones show seasonality, but the order of magnitude of this seasonal variation differs. Whereas the annual pattern in the upper zone ($uz$) is clearly visible in the lineplot, that of the lower zone is unnoticeable.
+From this plot we can infer that, in this case, both zones show seasonality, but the order of magnitude of this seasonal variation differs. Whereas the annual pattern in the upper zone ($uz$) is clearly visible in the lineplot, that of the lower zone ($lz$) is unnoticeable.
 
 #### 3.1.3 Discharge
 
@@ -249,14 +254,19 @@ As shown in these plots, from the map stacks we can extract time series. As we w
 Since for this run we activated the options `indicator` and `repWIndex`, a series of water index maps were generated:
     
 * WDI: water dependency index
+
 $$
 WDI = \frac{local Water Demand Not Met By Local Water}{total Water Demand}
 $$
+
 * WSI: water security index
+
 $$
 WSI = \frac{upstream Inflow Actually Used}{upstream Inflow Available}
 $$
+
 * WTI: water sustainability index
+
 $$
 WTI = 1 - \frac{surfaceWaterDeficit}{totalWaterDemand}
 $$
@@ -284,16 +294,16 @@ plot_mapstacks(wi, vmin=vmin, vmax=vmax, ylabel='water content')
     
 
 
-***Figure 5**. Water indexes.*
+***Figure 5**. Water indexes. Maps are averages over the whole period; timeseries are averages over the whole catchment.*
 
-The maps reproduce the water regions. The southern region has a slightly higher water demand stress. In the timeseries we observe that from 2005 onwards there are recurrent periods in which some of the local demands are not met by local water (peaks in WDI).
+The maps reproduce the water regions; with the southern region having a slightly higher water demand stress. In the timeseries we observe that from 2005 onwards there are recurrent periods in which some of the local demands are not met by local water (peaks in WDI).
 
 <font color='red'>Why is WTI constantly zero?</font>
 
 ### 3.2 Timeseries
 #### 3.2.1 Discharge
 
-As mentioned before, discharge timeseries can be produced directly from the model. The option `repDischargeTs` in the settings file must be active, and the variable `Gauges` must include the coordinates of the points of interest. In our example, we defined three points in which the model will generate timeseries. Let's check the results:
+As mentioned before, discharge timeseries can be produced directly from the model. The option `repDischargeTs` in the settings file must be active, and the variable `Gauges` must define the points of interest (in our case using the coordinates, but there are other ways to define it). We defined three points in which the model will generate timeseries. Let's check the results:
 
 
 ```python
@@ -320,11 +330,11 @@ fig.legend(loc=8, ncol=4, bbox_to_anchor=[0.5, -0.15, .1, .1]);
 
 ***Figure 6**. Discharge timeseries at the three points of interest.*
 
-The _disWin.tss_ file includes the discharge timeseries for the three points we defined. Each point is assigned an identifier. In our case, the catchment outlet corresponds to point 3. The plot includes as points the discharge timeseries at the outlet previously extracted from the discharge map stack (_dis.nc_); we check that the values of the TSS file are equal to those of the netCDF.
+The _disWin.tss_ file includes the discharge timeseries for the three points we defined. Each point is assigned an identifier; in our case, the catchment outlet corresponds to point 3. For the sake of comparison, the plot includes as points the discharge timeseries at the outlet extracted from the discharge map stack (_dis.nc_) in section [Discharge](#3.1.3-Discharge); we check that the values of the TSS file are equal to those of the netCDF.
 
 #### 3.2.2 Reservoirs
 
-As the option `repsimulateReservoirs` is active in the settings file, the simulation created three TSS files representing the inflow, outflow and relative filling of the reservoirs. In our case, since there's only one reservoir in the catchment, only one timeseries is included in each of these TSS files. Let's load these timeseries a plot the reservoir simulation.
+As the option `repsimulateReservoirs` is active in the settings file, the simulation created three TSS files representing the inflow (_qresin.tss_), outflow (_qresout.tss_) and relative filling (_resfill.tss_) of the reservoirs. In our case, since there's only one reservoir in the catchment, only one timeseries is included in each of these TSS files. Let's load these timeseries and plot the reservoir simulation.
 
 
 ```python
@@ -361,5 +371,3 @@ plot_reservoir(res_ts, clim=res_lim['conservative'], nlim=res_lim['normal'], fli
 Conclusions from this plot:
 
 * The reservoir storage is kept between the normal and flooding limits throughout most of the simulation period. In 1994, 1995 and 1997 there are three exceptions in which the storage exceeded the flood limit.
-
-< [Warmup run](2_warmup.ipynb) |

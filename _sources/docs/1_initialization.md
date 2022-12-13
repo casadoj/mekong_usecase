@@ -1,13 +1,15 @@
-< [General setup](0_general_setup.ipynb) | [Warmup run](2_warmup.ipynb) >
-
 ![header](images/header.png)
 
 # Initialization run
 
+<br>
+<br>
+<br>
+
 A thorough explanation on the importance of the model initialization can be found in this section of the [User Guide](https://ec-jrc.github.io/lisflood-code/3_step5_model-initialisation/). To summarize, the purpose of this run is to estimate two rate variables required for the model initialization:
 
-* `avgdis.nc`:  a map of the average discharge in the river network.
-* `lzavin.nc`: a map of the average inflow into the lower groundwater zone.
+* _avgdis.nc_:  a map of the average discharge in the river network.
+* _lzavin.nc_: a map of the average inflow into the lower groundwater zone.
 
 We will save these outputs in a specific subfolder (_initial_) within the project folder.
 
@@ -27,7 +29,7 @@ os.chdir('../../')
 
 ## 1 Settings file
 
-In the following lines, a snippet of the settings file (_settings_initialization.xml_) shows the most relevant lines set in this file for the initializatin run.
+In the following lines, a snippet of the settings file (_settings_initialization.xml_) shows the most relevant lines in this file for the initializatin run.
 
 ```xml
 <lfoptions>
@@ -55,7 +57,7 @@ In the following lines, a snippet of the settings file (_settings_initialization
     <textvar name="DtSec" value="86400"/>
     <textvar name="DtSecChannel" value="14400"/>
     
-    # PATHS
+    # PATHS WHERE THE RESULTS WILL BE SAVED
     <textvar name="PathInit" value="$(PathRoot)/initial"/>
     <textvar name="LZAvInflowMap" value="$(PathInit)/lzavin"/>
     <textvar name="AvgDis" value="$(PathInit)/avgdis"/>
@@ -91,10 +93,10 @@ In the following lines, a snippet of the settings file (_settings_initialization
 ```
 
 * In the element `<lfoptions>`, the option `InitLisflood` tells LISFLOOD that this run is an initialization. Since we are using as a routing module the split kinematic wave, we must deactivate the option `InitLisfloodwithoutsplit`; otherwise, the initialization run will not produce the file _avgdis.nc_ and we will not be able to initialize the routing module in suceeding runs. 
-* In the element `<lfuser>` we must define the simulation period, the location of the output files, and the initial conditions.
-    * The initialization run extends from 01-01-1979 to 31-12-2019. Following the [end of timestep naming convention](https://ec-jrc.github.io/lisflood-code/2_ESSENTIAL_time-management/) in LISFLOOD, the previous dates will be shifted forward by 1 day; that's why in the settings file the `StepStart` and `StepEnd` are 02-01-1979 and 01-01-2020, respectively. 
-    * We will save the two ouput files (_lzavin_ and _avgdis_) in a folder named _initial_.
-    * Regarding the initial conditions, those in the section water balance must be initialized with a value or a map (we define default values of 0 or 1), whereas the rest of variables can be internally initialized by setting the value -9999.
+* In the element `<lfuser>`, we must define the simulation period, the location of the output files, and the initial conditions.
+    * The initialization run spans from 01-01-1979 to 31-12-2019. Following the [end of timestep naming convention](https://ec-jrc.github.io/lisflood-code/2_ESSENTIAL_time-management/) in LISFLOOD, the previous dates will be shifted forward by 1 day; that's why in the settings file the `StepStart` and `StepEnd` are 02-01-1979 and 01-01-2020, respectively. 
+    * We will save the two ouput files (_lzavin.nc_ and _avgdis.nc_) in a folder named _initial_. It is not necessary to specify the extension of the NetCDF files.
+    * Regarding the initial conditions, those in the section water balance must be initialized with a value or a map (we define default values of 0 or 1), whereas the rest of the variables can be internally initialized by setting the value -9999.
     
 
 ## 2 Run the simulation
@@ -108,7 +110,7 @@ lisflood /home/user/your_path/settings_initialization.xml
 
 ## 3 Outputs
 
-The outputs are the two maps (NetCDF format) mentioned at the top of this notebook. In the settings file, we set that these file must be saved in the _initial_ subfolder. Let's load them and inspect them:
+The outputs are the two maps (NetCDF format) mentioned at the top of this notebook. In the settings file, we set that these files must be saved in the _initial_ subfolder. Let's load them and inspect them:
 
 
 ```python
@@ -135,6 +137,4 @@ for ax, da in zip(axes, [lzavin, avgdis]):
 
 ***Figure 1**. Output maps of the initialization run.*
 
-Both outputs represent an average flow rate, therefore, they have no temporal dimension.
-
-< [General setup](0_general_setup.ipynb) | [Warmup run](2_warmup.ipynb) >
+Both outputs represent an average flow rate, therefore, they have are a single map with no temporal dimension.
