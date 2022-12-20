@@ -6,5 +6,7 @@ The book is divided in four chapters. The first chapter introduces the study are
 
 More information about LISFLOOD can be found both in its [Model Documentation](https://ec-jrc.github.io/lisflood-model/) and the [User Guide](https://ec-jrc.github.io/lisflood-code/).
 
+**Table of contents**
+
 ```{tableofcontents}
 ```

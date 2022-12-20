@@ -75,12 +75,15 @@ In the following lines, a snippet of the settings file (_settings_initialization
     <textvar name="TotalCrossSectionAreaInitValue" value="-9999"/>
     <textvar name="CrossSection2AreaInitValue" value="-9999"/>
     <textvar name="PrevSideflowInitValue" value="-9999"/>
+    <textvar name="PrevDischarge" value="-9999"/>
     
     # reservoirs
     <textvar name="ReservoirInitialLevelValue" value="-9999"/>
-    <textvar name="LakePrevInflowValue" value="-9999"/>??
-    <textvar name="LakePrevOutflowValue" value="-9999"/>??
-    <textvar name="PrevDischarge" value="-9999"/>
+    
+    # lakes (if simulateLakes = 1)
+    <textvar name="LakeInitialLevelValue" value="-9999"/>
+    <textvar name="LakePrevInflowValue" value="-9999"/>
+    <textvar name="LakePrevOutflowValue" value="-9999"/>   
     
     # soils
     <textvar name="ThetaInit1Value" value="-9999"/>
