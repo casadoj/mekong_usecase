@@ -2,7 +2,7 @@ name: Deploy Jupyter Book
 on:
   push:
     branches:
-      - development
+      - main
     workflow_dispatch:
 
 jobs:
