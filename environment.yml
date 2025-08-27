@@ -1,0 +1,17 @@
+name: usecases
+channels:
+  - conda-forge
+  - anaconda
+  - defaults
+dependencies:
+  - python=3.9
+  - datetime
+  - jupyterlab
+  - jupyter-book
+  - matplotlib
+  - netcdf4
+  - numpy
+  - pandas
+  - pathlib
+  - xarray
+prefix: C:\DEV\Anaconda3\envs\usecases
