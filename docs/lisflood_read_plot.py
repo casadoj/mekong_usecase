@@ -6,21 +6,28 @@ from datetime import datetime, timedelta
 import xarray as xr
 import matplotlib.pyplot as plt
 from matplotlib.gridspec import GridSpec
+from pathlib import Path
+from typing import Union, Dict, Tuple, List
 
 
-def xml_timeinfo(xml):
+def xml_timeinfo(xml: Union[str, Path]) -> Tuple[datetime, int, datetime, datetime]:
     """It extracts the temporal information from the settings XML file.
     
     Input:
     ------
-    xml:               str. A XML settings file (path, filename and extension)
+    xml:               Union[str, Path] 
+        A XML settings file (path, filename and extension)
     
     Output:
     -------
-    CalendarDayStart:  datetime. Origin of time considered in the simulation
-    DtSec:             int. Temporal resolution of the simulation in seconds
-    StepStart:         datetime. First timestep of the simulation
-    StepEnd:           datetime. Last timestep of the simulation
+    CalendarDayStart:  datetime
+        Origin of time considered in the simulation
+    DtSec:             int
+        Temporal resolution of the simulation in seconds
+    StepStart:         datetime
+        First timestep of the simulation
+    StepEnd:           datetime
+        Last timestep of the simulation
     """
     
     # extract temporal info from the XML
@@ -43,18 +50,22 @@ def xml_timeinfo(xml):
     return CalendarDayStart, DtSec, StepStart, StepEnd
 
 
-def read_tss(tss, xml=None, squeeze=True):
+def read_tss(tss: Union[str, Path], xml: Union[str, Path] = None, squeeze: bool = True) -> Union[pd.DataFrame, pd.Series]:
     """It generates a Pandas DataFrame or Series from a TSS file. The settings XML file is required to add the temporal information to the time series; if not provided, the index will contain integers indicating the timestep since the considered origin of time.
     
     Inputs:
     -------
-    tss:     str. The TSS file (path, filename and extension) to be read.
-    xml:     str. The XML settings file (path, filename and extension) for the simulation that created the TSS file.
-    squeeze: boolean. If the TSS file has only one timeseries, if converts the pandas.DataFrame into a pandas.Series
+    tss:     Union[str, Path]
+        The TSS file (path, filename and extension) to be read.
+    xml:     Union[str, Path]
+        The XML settings file (path, filename and extension) for the simulation that created the TSS file.
+    squeeze: bool
+        If the TSS file has only one timeseries, if converts the pandas.DataFrame into a pandas.Series
     
     Output:
     -------
-    df:      pandas.DataFrame or pandas.Series. 
+    df:      Union[pd.DataFrame, pandas.Series]
+        Time series
     """
  
     # extract info from the header
